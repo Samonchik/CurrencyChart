@@ -1,0 +1,39 @@
+﻿<Window x:Class="CurrencyChart.MainWindow"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurrencyChart"
+        mc:Ignorable="d"
+        Title="Анализ курсов" Height="280" Width="650" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="256*"/>
+            <ColumnDefinition Width="215*"/>
+            <ColumnDefinition Width="179*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="67*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="1" Orientation="Horizontal">
+            <DatePicker x:Name="userStartDateSelector" Margin="10,10,0,10" Width="100" Height="25" DisplayDateStart="2017-12-01" FirstDayOfWeek="Monday" SelectedDateChanged="userStartDateSelector_SelectedDateChanged"/>
+            <Label Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <DatePicker x:Name="userEndDateSelector" Margin="10,10,0,10" Width="100" Height="25" FirstDayOfWeek="Monday" SelectedDateChanged="userEndDateSelector_SelectedDateChanged" DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static
+            System:DateTime.Today}}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1">
+            <Label Content="Валюта:" Margin="10" Height="25"/>
+            <ComboBox x:Name="userCurrencySelector" Margin="10" Width="100" Height="25" SelectionChanged="userCurrencySelector_SelectionChanged">
+                <TextBox Text="USD" IsEnabled="False"/>
+                <TextBox Text="EUR" IsEnabled="False"/>
+                <TextBox Text="RUB" IsEnabled="False"/>
+            </ComboBox>
+        </StackPanel>
+        <WpfPlot x:Name="currencyChart" Grid.Row="1" Grid.ColumnSpan="3" />
+
+        <Button Grid.Column="2" Content="Получить" Margin="10,7,10,7" Click="Button_Click"/>
+    </Grid>
+</Window>
