@@ -1,5 +1,7 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using RestSharp;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
+using System.Threading;
 
 namespace CurrencyChartServer
 {
@@ -32,7 +34,7 @@ namespace CurrencyChartServer
                 }
                 var resultTOSave = curencyRatewithFirstId.ToArray();
                 Console.WriteLine("Данные собраны, сохраняю и отправляю запрос.");
-                Storage.SaveDataToCacheAndDb(Storage.CurrencyFromRequest, resultTOSave);
+                Storage.ConvertReciveCurrencyToCachFormat(Storage.CurrencyFromRequest, resultTOSave);
             }
 
         }
@@ -97,6 +99,54 @@ namespace CurrencyChartServer
                 periodForNBRB.Insert(i, Storage.StartDateFromRequest);
             }
             return periodForNBRB;
+        }
+        public static void CollectBTCData()
+        {
+            try
+            {
+                var listOfPeriod = RequestDivider100DaysLimit();
+                for (int i = 0; i < listOfPeriod.Count - 1; i++)
+                {
+                    var client = new RestClient($"https://rest.coinapi.io/v1/exchangerate/BTC/USD/history?period_id=1DAY&time_start={listOfPeriod[i]:yyyy-MM-dd}&time_end={listOfPeriod[(i + 1)].AddDays(1):yyyy-MM-dd}");
+                    var request = new RestRequest();
+                    request.AddHeader("X-CoinAPI-Key", "24088303-DC9C-436B-A671-0CAC18709B48");
+                    var response = client.Get(request);
+                    if (response.Content != null)
+                    {
+                        var btcRate = JsonSerializer.Deserialize<BtcRate[]>(response.Content);
+                        if (btcRate != null)
+                        {
+                            Storage.ConvertReciveCurrencyToCachFormat(btcRate);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                Console.WriteLine("Проверьте интернет-подключение.");
+            }
+           
+           
+        }
+        public static List<DateTime> RequestDivider100DaysLimit()
+        {
+            var periodForCoinApi = new List<DateTime>
+            {
+                Storage.StartDateFromRequest,
+                Storage.EndDateFromRequest,
+            };
+
+
+            int countOfDaysInBtcRequest = Storage.PeriodFromRequest - Storage.DataForResponse.Count;
+            int countOfBTCRequest = countOfDaysInBtcRequest / 100 + 1;
+            for (int i = 1; i < countOfBTCRequest; i++)
+            {
+                Storage.StartDateFromRequest = Storage.StartDateFromRequest.AddDays(100);
+                periodForCoinApi.Insert(i, Storage.StartDateFromRequest);
+            }
+            return periodForCoinApi;
         }
     }
 }

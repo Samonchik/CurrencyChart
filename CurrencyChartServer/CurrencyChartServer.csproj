@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CoinAPI.REST.V1" Version="2.0.9" />
+    <PackageReference Include="RestSharp" Version="108.0.3" />
+  </ItemGroup>
+
 </Project>

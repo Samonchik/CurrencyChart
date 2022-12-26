@@ -22,7 +22,7 @@
             <DatePicker x:Name="userStartDateSelector" Margin="10,10,0,10" Width="100" Height="25" DisplayDateStart="2017-12-01" FirstDayOfWeek="Monday" SelectedDateChanged="userStartDateSelector_SelectedDateChanged"/>
             <Label Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
             <DatePicker x:Name="userEndDateSelector" Margin="10,10,0,10" Width="100" Height="25" FirstDayOfWeek="Monday" SelectedDateChanged="userEndDateSelector_SelectedDateChanged" DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static
-            System:DateTime.Today}}"/>
+            System:DateTime.Today}}" IsTodayHighlighted="True" DisplayDateStart="2017-12-01"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="1">
             <Label Content="Валюта:" Margin="10" Height="25"/>
@@ -30,6 +30,7 @@
                 <TextBox Text="USD" IsEnabled="False"/>
                 <TextBox Text="EUR" IsEnabled="False"/>
                 <TextBox Text="RUB" IsEnabled="False"/>
+                <TextBox Text="BTC" IsEnabled="False"/>
             </ComboBox>
         </StackPanel>
         <WpfPlot x:Name="currencyChart" Grid.Row="1" Grid.ColumnSpan="3" />

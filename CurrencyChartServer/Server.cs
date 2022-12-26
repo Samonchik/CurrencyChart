@@ -46,8 +46,18 @@ namespace CurrencyChartServer
                 Console.WriteLine($"Получен запрос курса {Storage.CurrencyFromRequest?.Cur_Abbreviation} за период с " +
                     $"{Storage.StartDateFromRequest.Date:yyyy-MM-dd} по {Storage.EndDateFromRequest.Date:yyyy-MM-dd}");
                 Storage.CheckDataInDb();
-                DataCollector.CollectDataFromNBRB();
-                SendResponse(responseForWork);
+                if (Storage.CurrencyFromRequest != null && Storage.CurrencyFromRequest.Cur_Abbreviation == "BTC")
+                {
+                    DataCollector.CollectBTCData();
+                    SendResponse(responseForWork);
+                }
+                else
+                {
+                    
+                    DataCollector.CollectDataFromNBRB();
+                    SendResponse(responseForWork);
+                }
+                
             }
             else
             {
@@ -64,6 +74,7 @@ namespace CurrencyChartServer
             if (queryArray != null && queryArray[0] == "USD") currency = new Currency() { Cur_Abbreviation = "USD" };
             else if (queryArray != null && queryArray[0] == "EUR") currency = new Currency() { Cur_Abbreviation = "EUR" };
             else if (queryArray != null && queryArray[0] == "RUB") currency = new Currency() { Cur_Abbreviation = "RUB" };
+            else if (queryArray != null && queryArray[0] == "BTC") currency = new Currency() { Cur_Abbreviation = "BTC" };
             else return false;
 
             if (queryArray1 == null || !DateTime.TryParse(queryArray1[0], out DateTime startdate)) return false;

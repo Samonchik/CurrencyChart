@@ -13,7 +13,7 @@ namespace CurrencyChartServer
                 e.Cancel = true;
                 keepRunning = false;
             };
-
+         
 
             var Server = new Server();
             Server.Start();
