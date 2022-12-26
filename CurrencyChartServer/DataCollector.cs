@@ -125,7 +125,7 @@ namespace CurrencyChartServer
             catch (Exception)
             {
 
-                Console.WriteLine("Проверьте интернет-подключение.");
+                Console.WriteLine("Проверьте интернет-подключение ");
             }
            
            
