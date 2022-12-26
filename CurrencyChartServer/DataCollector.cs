@@ -109,7 +109,7 @@ namespace CurrencyChartServer
                 {
                     var client = new RestClient($"https://rest.coinapi.io/v1/exchangerate/BTC/USD/history?period_id=1DAY&time_start={listOfPeriod[i]:yyyy-MM-dd}&time_end={listOfPeriod[(i + 1)].AddDays(1):yyyy-MM-dd}");
                     var request = new RestRequest();
-                    request.AddHeader("X-CoinAPI-Key", "24088303-DC9C-436B-A671-0CAC18709B48");
+                    request.AddHeader("X-CoinAPI-Key", "EFB4CCE0-F444-4148-B4C3-244D9ED11E8B");
                     var response = client.Get(request);
                     if (response.Content != null)
                     {
