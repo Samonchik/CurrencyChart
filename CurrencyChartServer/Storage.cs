@@ -80,6 +80,16 @@ namespace CurrencyChartServer
             Db.AddRange(clearDbBBtc);
             Db = Db.OrderBy(x => x.Date).ToList();
             DataForResponse = DataForResponse.Distinct().ToList();
+            var clearRespUsd = DataForResponse.Where(x => x.Currency == "USD").GroupBy(x => x.Date).Select(x => x.First()).ToList();
+            var clearRespEur = DataForResponse.Where(x => x.Currency == "EUR").GroupBy(x => x.Date).Select(x => x.First()).ToList();
+            var clearRespRub = DataForResponse.Where(x => x.Currency == "RUB").GroupBy(x => x.Date).Select(x => x.First()).ToList();
+            var clearRespBtc = DataForResponse.Where(x => x.Currency == "BTC").GroupBy(x => x.Date).Select(x => x.First()).ToList();
+            DataForResponse.Clear();
+            DataForResponse.AddRange(clearRespUsd);
+            DataForResponse.AddRange(clearRespEur);
+            DataForResponse.AddRange(clearRespRub);
+            DataForResponse.AddRange(clearRespBtc);
+            DataForResponse = DataForResponse.OrderBy(x => x.Date).ToList();
             var options = new JsonSerializerOptions { WriteIndented = true };
             options.Converters.Add(new CustomDateTimeConverter("dd/MM/yy"));
             using (FileStream fs = new("cache.json", FileMode.OpenOrCreate))

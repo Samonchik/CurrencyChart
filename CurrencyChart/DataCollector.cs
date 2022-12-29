@@ -13,7 +13,7 @@ namespace CurrencyChart
 {
     internal static class DataCollector
     {
-        private static HttpClient httpClient = new() { Timeout = TimeSpan.FromSeconds(15) };
+        private static HttpClient httpClient = new();
         public static async Task <RateforCash[]?> CollectCurrencyChartServerAsync(string abrOfCur, DateTime? startdate, DateTime? enddate)
         {
             RateforCash[]? graphForChart = null;
